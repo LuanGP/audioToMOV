@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Áudio to MOV</title>
+  <meta name="description" content="Conversor de áudio para MOV descomprimido (PCM) — ideal para Resolume. Roda no navegador, sem upload.">
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <img src="icon.png" alt="" class="app-icon" width="32" height="32">
+      <h1>Áudio to MOV</h1>
+    </header>
+
+    <div id="loader-panel" class="loader-panel">
+      <div class="loader-spinner" aria-hidden="true"></div>
+      <p id="loader-text">Carregando conversor…</p>
+      <p class="loader-hint">FFmpeg local (~31 MB) — sem CDN externo</p>
+    </div>
+
+    <main id="main-panel" class="main-panel hidden">
+      <section id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Área para arrastar arquivos de áudio">
+        <p id="central-text" class="central-text">Arraste aqui para converter</p>
+        <p class="drop-hint">ou clique para selecionar</p>
+        <input type="file" id="file-input" multiple hidden>
+      </section>
+
+      <section id="queue-panel" class="queue-panel hidden">
+        <p class="queue-title">Arquivos na fila:</p>
+        <ul id="queue-list" class="queue-list" role="listbox" aria-label="Fila de arquivos"></ul>
+        <div class="queue-actions">
+          <button type="button" id="btn-remove" class="btn btn-secondary">Remover selecionado</button>
+          <button type="button" id="btn-convert" class="btn btn-primary">Converter</button>
+        </div>
+      </section>
+
+      <section id="progress-panel" class="progress-panel hidden">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <p id="progress-text" class="progress-text"></p>
+      </section>
+    </main>
+
+    <footer class="app-footer">Conversor de áudio para MOV by Luan</footer>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
