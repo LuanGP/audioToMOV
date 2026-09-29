@@ -186,7 +186,7 @@ async function loadFFmpeg() {
 
 async function convertFile(ffmpeg, file) {
   const inputName = `input${getExtension(file.name) || '.audio'}`;
-  const outputName = 'output.mov';
+  const outputName = 'output.wav';
 
   await ffmpeg.writeFile(inputName, await fetchFile(file));
   const exitCode = await ffmpeg.exec([
@@ -194,7 +194,7 @@ async function convertFile(ffmpeg, file) {
     '-i', inputName,
     '-vn',
     '-acodec', 'pcm_s16le',
-    '-f', 'mov',
+    '-f', 'wav',
     '-y',
     outputName,
   ]);
@@ -208,7 +208,7 @@ async function convertFile(ffmpeg, file) {
     throw new Error(`FFmpeg retornou código ${exitCode}`);
   }
 
-  return new Blob([data], { type: 'video/quicktime' });
+  return new Blob([data], { type: 'audio/wav' });
 }
 
 function downloadBlob(blob, filename) {
@@ -257,7 +257,7 @@ async function convertQueue() {
 
     try {
       const blob = await convertFile(ffmpeg, item.file);
-      downloadBlob(blob, `${stem(item.file.name)}.mov`);
+      downloadBlob(blob, `${stem(item.file.name)}.wav`);
       item.status = 'done';
       success++;
     } catch (err) {
