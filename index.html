@@ -6,7 +6,7 @@
   <title>Áudio to WAV</title>
   <meta name="description" content="Converte seu áudio para WAV, pronto para o Resolume. Roda no navegador, sem upload.">
   <meta name="theme-color" content="#1c2420">
-  <link rel="icon" href="icon.png" type="image/png">
+  <link id="app-icon" rel="icon" href="icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
   <div class="app">
     <header class="brand">
-      <img src="icon.png" alt="" class="brand-icon" width="48" height="48">
+      <img id="brand-icon" src="icon.png" alt="" class="brand-icon" width="48" height="48">
       <div class="brand-copy">
         <p class="brand-kicker">by Luan</p>
         <h1>Áudio to WAV</h1>
@@ -94,8 +94,13 @@
       }
 
       window.__ENGINE_VERSION = version;
+      const assetVersion = '?v=' + encodeURIComponent(version);
       const css = document.getElementById('app-css');
-      if (css) css.href = 'style.css?v=' + encodeURIComponent(version);
+      if (css) css.href = 'style.css' + assetVersion;
+      const favicon = document.getElementById('app-icon');
+      if (favicon) favicon.href = 'icon.png' + assetVersion;
+      const brandIcon = document.getElementById('brand-icon');
+      if (brandIcon) brandIcon.src = 'icon.png' + assetVersion;
 
       const script = document.createElement('script');
       script.type = 'module';
