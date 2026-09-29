@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link id="app-css" rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="atmosphere" aria-hidden="true"></div>
@@ -70,6 +70,40 @@
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
-  <script type="module" src="app.js"></script>
+  <script>
+    const ENGINE_VERSION_KEY = 'engine-version';
+
+    async function bootEngine() {
+      let version = '1';
+      try {
+        const res = await fetch('version.json?t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('version.json ' + res.status);
+        const data = await res.json();
+        version = String(data.engine);
+      } catch (err) {
+        console.warn('Não foi possível ler a versão do motor', err);
+      }
+
+      const saved = localStorage.getItem(ENGINE_VERSION_KEY);
+      if (saved !== version) {
+        if (saved && 'caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((key) => caches.delete(key)));
+        }
+        localStorage.setItem(ENGINE_VERSION_KEY, version);
+      }
+
+      window.__ENGINE_VERSION = version;
+      const css = document.getElementById('app-css');
+      if (css) css.href = 'style.css?v=' + encodeURIComponent(version);
+
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'app.js?v=' + encodeURIComponent(version);
+      document.body.appendChild(script);
+    }
+
+    bootEngine();
+  </script>
 </body>
 </html>
